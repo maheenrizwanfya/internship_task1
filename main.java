@@ -4,48 +4,52 @@ import java.util.Scanner;
 public class main {
     public static void main(String[] args) {
         Scanner input = new Scanner(System.in);
-        ArrayList<Double> grades = new ArrayList<>();
+        ArrayList<Student> students = new ArrayList<>();
 
         System.out.println("Enter the number of students: ");
         int numberOfStudents = input.nextInt();
+        input.nextLine(); // to skip the enter line
 
-        System.out.println("Enter student's grades: ");
         for (int i = 0; i < numberOfStudents; i++) {
-            System.out.println("Student" + (i+1) + ": ");
-            double grade = input.nextDouble();
-            grades.add(grade);
+            System.out.println("Enter name of Student " + (i+1) + " :");
+            String name = input.nextLine();
+            System.out.println("Enter grades of " + name + " :");
+            Double grade = input.nextDouble();
+            input.nextLine();
+            students.add(new Student(name,grade));
         }
 
-        System.out.println("The class average is: " + calculateAverage(grades));
-        System.out.println("The highest grade is: " + findHighest(grades));
-        System.out.println("The lowest grade is: " + findLowest(grades));
-
+        System.out.println("The class average is: " + calculateAverage(students));
+        Student highest = findHighest(students);
+        System.out.println("The highest grade is: " + highest.getGrade() + " by " + highest.getName());
+        Student lowest = findLowest(students);
+        System.out.println("The lowest grade is: " + lowest.getGrade() + " by " + lowest.getName());
     }
 
-    static double calculateAverage(ArrayList<Double> grades){
+    static double calculateAverage(ArrayList<Student> students){
         double sum = 0;
-        for (int i = 0; i < grades.size(); i++) {
-            sum = sum + grades.get(i);
+        for (Student student : students){
+            sum = sum + student.getGrade();
         }
-        double average = sum / grades.size();
+        double average = sum / students.size();
         return average;
     }
 
-    static double findHighest(ArrayList<Double> grades){
-        double max = 0;
-        for (int i = 0; i < grades.size(); i++) {
-            if (grades.get(i) > max)
-                max = grades.get(i);
-        }
-        return max;
+    static Student findHighest(ArrayList<Student> students){
+       Student highest = students.get(0); // highest student for now is the first student in the list
+       for(Student student : students){
+           if (student.getGrade() > highest.getGrade())
+               highest = student;
+       }
+        return highest;
     }
 
-    static double findLowest(ArrayList<Double> grades){
-        double min = 100; // since the marks will be out of 100 max
-        for (int i = 0; i < grades.size(); i++) {
-            if (grades.get(i) < min)
-                min = grades.get(i);
+    static Student findLowest(ArrayList<Student> students){
+        Student lowest = students.get(0); // lowest student for now is the first student in the list
+        for(Student student : students){
+            if (student.getGrade() < lowest.getGrade())
+                lowest = student;
         }
-        return min;
+        return lowest;
     }
 }
